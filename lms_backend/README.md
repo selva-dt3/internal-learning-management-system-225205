@@ -30,5 +30,14 @@ This service provides authentication and core APIs for the Internal LMS.
    - POST /api/auth/signup
    - POST /api/auth/login
    - GET /api/auth/me (requires Authorization: Bearer <access_token>)
+   - GET /api/onboarding/status (auth required)
+   - POST /api/onboarding/acknowledgements (auth required) { "document": "nda" | "coc" }
+   - GET /api/analytics/summary (auth required; roles: admin, hr)
+   
+Schema notes (Supabase):
+   - onboarding (table): { user_id: uuid/text, nda_acknowledged: boolean, coc_acknowledged: boolean }
+   - profiles (table): { user_id: uuid/text, role: text in ['admin','hr','employee'] } used for analytics counts
+   - user_progress (optional table for analytics): { user_id, lessons_completed: int }
+   - quiz_results (optional table for analytics): { user_id, passed: boolean }
 
 Note: Do not log or hardcode secrets. Supabase credentials are read from environment.

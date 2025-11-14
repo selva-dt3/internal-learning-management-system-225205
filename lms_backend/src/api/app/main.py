@@ -10,6 +10,8 @@ from .errors import (
 from .clients.supabase_client import init_supabase_client, close_supabase_client
 from .routers.health import router as health_router
 from .routers.auth import router as auth_router
+from .routers.onboarding import router as onboarding_router
+from .routers.analytics import router as analytics_router
 
 # Configure logging early
 configure_logging()
@@ -20,6 +22,14 @@ openapi_tags = [
     {
         "name": "Auth",
         "description": "Authentication endpoints using Supabase as identity provider.",
+    },
+    {
+        "name": "Onboarding",
+        "description": "Employee onboarding endpoints (acknowledgements, status).",
+    },
+    {
+        "name": "Analytics",
+        "description": "Analytics endpoints restricted to Admin/HR roles.",
     },
 ]
 
@@ -49,6 +59,8 @@ def create_app() -> FastAPI:
     # Routers
     app.include_router(health_router, prefix="/api", tags=["Health"])
     app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+    app.include_router(onboarding_router, prefix="/api/onboarding", tags=["Onboarding"])
+    app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
 
     # Exception handlers
     register_exception_handlers(app)
