@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     SUPABASE_URL: str = Field(default="", description="Supabase project URL")
     SUPABASE_KEY: str = Field(default="", description="Supabase service anon/public key")
 
+    # Comma-separated list of allowed origins for CORS. Example:
+    # "http://localhost:3000,https://vscode-internal-XXXX.beta01.cloud.kavia.ai:3000"
+    ALLOWED_ORIGINS: str = Field(
+        default="http://localhost:3000,https://localhost:3000",
+        description="Comma-separated list of allowed origins for CORS",
+    )
+
     # pydantic-settings v2 configuration:
     # - env_file: load from .env
     # - case_sensitive: False to accept variables regardless of case

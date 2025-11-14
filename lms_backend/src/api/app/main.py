@@ -57,10 +57,19 @@ def create_app() -> FastAPI:
         openapi_tags=openapi_tags,
     )
 
-    # CORS
+    # CORS: parse comma-separated ALLOWED_ORIGINS from environment
+    try:
+        origins = [o.strip() for o in (settings.ALLOWED_ORIGINS or "").split(",") if o.strip()]
+    except Exception:
+        origins = ["http://localhost:3000", "https://localhost:3000"]
+
+    if not origins:
+        # sensible defaults for local dev
+        origins = ["http://localhost:3000", "https://localhost:3000"]
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000", "https://localhost:3000"],
+        allow_origins=origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

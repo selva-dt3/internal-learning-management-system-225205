@@ -11,6 +11,7 @@ This service provides authentication and core APIs for the Internal LMS.
    - LOG_LEVEL (optional)
    - ENV (optional)
    - HOST/PORT/RELOAD (optional)
+   - ALLOWED_ORIGINS (comma-separated CORS origins; see below)
 
 2. Install dependencies:
    pip install -r requirements.txt
@@ -51,5 +52,20 @@ Schema notes (Supabase):
    - profiles (table): { user_id: uuid/text, role: text in ['admin','hr','employee'] } used for analytics counts
    - user_progress (optional table for analytics): { user_id, lessons_completed: int }
    - quiz_results (optional table for analytics): { user_id, passed: boolean }
+
+## CORS configuration
+
+The backend reads a comma-separated list of allowed origins from the `ALLOWED_ORIGINS` environment variable and applies it to FastAPI's `CORSMiddleware`.
+
+- For local development:
+  `ALLOWED_ORIGINS=http://localhost:3000,https://localhost:3000`
+
+- For preview environments, include your preview frontend URL:
+  `ALLOWED_ORIGINS=http://localhost:3000,https://<preview-host>:3000`
+
+Example:
+```
+ALLOWED_ORIGINS=http://localhost:3000,https://vscode-internal-34912-beta.beta01.cloud.kavia.ai:3000
+```
 
 Note: Do not log or hardcode secrets. Supabase credentials are read from environment.
