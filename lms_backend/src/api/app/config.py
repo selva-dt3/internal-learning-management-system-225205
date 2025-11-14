@@ -2,7 +2,7 @@ from functools import lru_cache
 from pydantic import Field
 # Prefer pydantic-settings (v2) import path. If missing, raise a clear error guiding installation.
 try:
-    from pydantic_settings import BaseSettings  # type: ignore
+    from pydantic_settings import BaseSettings, SettingsConfigDict  # type: ignore
 except ImportError as e:
     raise ImportError(
         "pydantic-settings is required. Please install with 'pip install pydantic-settings>=2.0.3,<3.0' "
@@ -20,10 +20,8 @@ class Settings(BaseSettings):
     SUPABASE_URL: str = Field(default="", description="Supabase project URL")
     SUPABASE_KEY: str = Field(default="", description="Supabase service anon/public key")
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
-
+    # pydantic-settings v2 configuration
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
