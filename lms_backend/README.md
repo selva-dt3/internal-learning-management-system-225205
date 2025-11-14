@@ -33,6 +33,18 @@ This service provides authentication and core APIs for the Internal LMS.
    - GET /api/onboarding/status (auth required)
    - POST /api/onboarding/acknowledgements (auth required) { "document": "nda" | "coc" }
    - GET /api/analytics/summary (auth required; roles: admin, hr)
+   - Users (roles: admin, hr unless noted)
+     - GET /api/users
+     - GET /api/users/{id}
+     - POST /api/users (admin)
+     - PUT /api/users/{id}
+     - DELETE /api/users/{id} (admin)
+   - Lessons (auth required)
+     - GET /api/lessons (employees see only published)
+     - GET /api/lessons/{id} (employees only published)
+     - POST /api/lessons (admin/hr)
+     - PUT /api/lessons/{id} (admin/hr)
+     - DELETE /api/lessons/{id} (admin/hr)
    
 Schema notes (Supabase):
    - onboarding (table): { user_id: uuid/text, nda_acknowledged: boolean, coc_acknowledged: boolean }

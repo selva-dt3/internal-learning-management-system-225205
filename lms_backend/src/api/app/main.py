@@ -12,6 +12,8 @@ from .routers.health import router as health_router
 from .routers.auth import router as auth_router
 from .routers.onboarding import router as onboarding_router
 from .routers.analytics import router as analytics_router
+from .routers.users import router as users_router
+from .routers.lessons import router as lessons_router
 
 # Configure logging early
 configure_logging()
@@ -30,6 +32,14 @@ openapi_tags = [
     {
         "name": "Analytics",
         "description": "Analytics endpoints restricted to Admin/HR roles.",
+    },
+    {
+        "name": "Users",
+        "description": "User management endpoints backed by Supabase 'profiles' table. Admin/HR access.",
+    },
+    {
+        "name": "Lessons",
+        "description": "Lessons CRUD backed by Supabase 'lessons' table. Admin/HR manage; Employees read.",
     },
 ]
 
@@ -61,6 +71,8 @@ def create_app() -> FastAPI:
     app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
     app.include_router(onboarding_router, prefix="/api/onboarding", tags=["Onboarding"])
     app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
+    app.include_router(users_router, prefix="/api/users", tags=["Users"])
+    app.include_router(lessons_router, prefix="/api/lessons", tags=["Lessons"])
 
     # Exception handlers
     register_exception_handlers(app)
