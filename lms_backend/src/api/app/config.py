@@ -1,6 +1,13 @@
 from functools import lru_cache
 from pydantic import Field
-from pydantic_settings import BaseSettings
+# Prefer pydantic-settings (v2) import path. If missing, raise a clear error guiding installation.
+try:
+    from pydantic_settings import BaseSettings  # type: ignore
+except ImportError as e:
+    raise ImportError(
+        "pydantic-settings is required. Please install with 'pip install pydantic-settings>=2.0.3,<3.0' "
+        "and ensure Pydantic v2 is installed."
+    ) from e
 
 
 class Settings(BaseSettings):
