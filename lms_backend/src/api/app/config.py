@@ -17,11 +17,16 @@ class Settings(BaseSettings):
     ENV: str = Field(default="development", description="Environment name")
     LOG_LEVEL: str = Field(default="INFO", description="Logging level")
 
+    # These remain required by application logic; empty default allows startup,
+    # and missing values will degrade Supabase features appropriately.
     SUPABASE_URL: str = Field(default="", description="Supabase project URL")
     SUPABASE_KEY: str = Field(default="", description="Supabase service anon/public key")
 
-    # pydantic-settings v2 configuration
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
+    # pydantic-settings v2 configuration:
+    # - env_file: load from .env
+    # - case_sensitive: False to accept variables regardless of case
+    # - extra: "ignore" to avoid ValidationError on unknown env vars
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False, extra="ignore")
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
